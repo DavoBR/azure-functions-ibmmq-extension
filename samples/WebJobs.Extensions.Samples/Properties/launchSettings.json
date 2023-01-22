@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "WebJobs.Extensions.Samples": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7186",
+      "launchBrowser": false
+    }
+  }
+}

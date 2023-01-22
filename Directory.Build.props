@@ -1,0 +1,11 @@
+<Project>
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+        <Version>1.0.0</Version>
+        <PackageProjectUrl>https://github.com/DavoBR/azure-functions-ibmmq-extension</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/DavoBR/azure-functions-ibmmq-extension</RepositoryUrl>
+        <RepositoryType>github</RepositoryType>
+        <Authors>davobr</Authors>
+        <Copyright>davobr</Copyright>
+    </PropertyGroup>
+</Project>
