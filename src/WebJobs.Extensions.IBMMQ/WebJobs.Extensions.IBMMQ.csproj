@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>AzureWebJobs.Extensions.IBMMQ</AssemblyName>
+        <RootNamespace>Azure.WebJobs.Extensions.IBMMQ</RootNamespace>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>true</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Description>Azure WebJobs SDK IBMMQ Extension</Description>
+        <PackageTags>ibmmq azurefunctions webjobs</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="IBMXMSDotnetClient" Version="9.2.5" />
+      <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.33" />
+    </ItemGroup>
+</Project>
