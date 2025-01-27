@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <AssemblyName>AzureFunctions.Worker.Extensions.IBMMQ</AssemblyName>
         <RootNamespace>Azure.Functions.Worker.Extensions.IBMMQ</RootNamespace>
         <ImplicitUsings>true</ImplicitUsings>
