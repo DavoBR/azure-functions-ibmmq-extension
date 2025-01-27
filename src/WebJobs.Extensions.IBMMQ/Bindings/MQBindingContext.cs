@@ -6,6 +6,10 @@ namespace Azure.WebJobs.Extensions.IBMMQ.Bindings;
 internal class MQBindingContext
 {
     public string QueueName { get; set; } = null!;
+
+    public string? MessageId { get; set; }
+
+    public string? CorrelationId { get; set; }
     
     public string ConnectionString { get; set; } = null!;
 

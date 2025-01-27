@@ -18,6 +18,18 @@ public class MQQueueAttribute : Attribute
     public string QueueName { get; }
 
     /// <summary>
+    /// El MessageId
+    /// </summary>
+    [AutoResolve]
+    public string? MessageId { get; }
+
+    /// <summary>
+    /// El CorrelationId
+    /// </summary>
+    [AutoResolve]
+    public string? CorrelationId { get; }
+
+    /// <summary>
     /// Parametros de conexión del Queue Manager. Formato: HostName=bhasdt1.cfbhd.com;Port=1414;Channel=CHL.MS
     /// </summary>
     [ConnectionString]
