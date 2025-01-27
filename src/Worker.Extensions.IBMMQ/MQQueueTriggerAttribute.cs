@@ -3,16 +3,13 @@ using Microsoft.Azure.Functions.Worker.Extensions.Abstractions;
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Azure.Functions.Worker;
 
-public sealed class MQQueueTriggerAttribute : TriggerBindingAttribute
+public sealed class MQQueueTriggerAttribute(string queueName) : TriggerBindingAttribute
 {
-    public MQQueueTriggerAttribute(string queueName) {
-        QueueName = queueName;
-    }
-    
+
     /// <summary>
     /// El nombre de la cola 
     /// </summary>
-    public string QueueName { get; }
+    public string QueueName { get; } = queueName;
 
     /// <summary>
     /// Parametros de conexión del Queue Manager. Formato: HostName=localhost;Port=1414;Channel=CHL.MS

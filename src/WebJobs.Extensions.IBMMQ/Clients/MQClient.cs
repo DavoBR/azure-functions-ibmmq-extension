@@ -7,7 +7,7 @@ internal class MQClient : IDisposable
 {
     private readonly IDictionary<string, string> _parameters;
     private readonly IConnection _connection;
-    private readonly List<ISession> _sessions = new();
+    private readonly List<ISession> _sessions = [];
     
     public event ExceptionListener? ExceptionListener;
 
