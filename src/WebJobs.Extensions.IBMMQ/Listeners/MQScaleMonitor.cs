@@ -21,7 +21,7 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics>
         _queueName = queueName;
         _logger = logger;
         
-        Descriptor = new ScaleMonitorDescriptor($"{functionId}-MQQueueTrigger-{queueName}".ToLower());
+        Descriptor = new ScaleMonitorDescriptor($"{functionId}-MQQueueTrigger-{queueName}".ToLower(), functionId);
     }
     
     public ScaleMonitorDescriptor Descriptor { get; }
