@@ -1,0 +1,7 @@
+{
+    "azureFunctions.projectSubpath": "samples/Worker.Extensions.Samples",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "publish (functions)"
+}
