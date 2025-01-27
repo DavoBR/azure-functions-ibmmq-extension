@@ -5,7 +5,7 @@ namespace WebJobs.Extensions.Samples;
 
 public static class MQInputSample
 {
-    [FunctionName("MQInputSample")]
+    [FunctionName(nameof(MQInputSample))]
     public static Task RunAsync(
         [MQQueueTrigger("%MQ_QUEUE_INPUT%", Connection = "MQ_CONNECTION_STRING")] string input,
         [MQQueue("%MQ_QUEUE_OUTPUT%", Connection = "MQ_CONNECTION_STRING")] out string output,
