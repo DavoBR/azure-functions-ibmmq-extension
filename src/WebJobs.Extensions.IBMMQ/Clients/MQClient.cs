@@ -3,16 +3,14 @@ using IBM.XMS;
 
 namespace Azure.WebJobs.Extensions.IBMMQ.Clients;
 
-internal class MQClient : IDisposable
-{
+internal class MQClient : IDisposable {
     private readonly IDictionary<string, string> _parameters;
     private readonly IConnection _connection;
     private readonly List<ISession> _sessions = [];
-    
+
     public event ExceptionListener? ExceptionListener;
 
-    public MQClient(string connectionString)
-    {
+    public MQClient(string connectionString) {
         _parameters = ConnectionStringHelper.Parse(connectionString);
 
         // Create XMS Factory
@@ -21,15 +19,20 @@ internal class MQClient : IDisposable
         var cf = xmsFactory.CreateConnectionFactory();
         // Set properties
         SetConnectionProperties(cf, out var userId, out var password);
-        // Create connection
-        _connection = cf.CreateConnection(userId, password);
+
+        if (userId != null) {
+            // Create connection based on username-password combo
+            _connection = cf.CreateConnection(userId, password);
+        } else {
+            // Create connection based on certificates
+            _connection = cf.CreateConnection();
+        }
         _connection.ExceptionListener += ex => ExceptionListener?.Invoke(ex);
     }
 
-    public ISession CreateSession()
-    {
+    public ISession CreateSession() {
         _parameters.TryGetValue("AckMode", out var ackMode);
-        
+
         // https://www.ibm.com/docs/en/ibm-mq/8.0?topic=sessions-message-acknowledgement#xms_cmesack
         var session = _connection.CreateSession(false, ackMode?.ToUpper() switch {
             "AUTO" => AcknowledgeMode.AutoAcknowledge,
@@ -37,7 +40,7 @@ internal class MQClient : IDisposable
             "DUPSOK" => AcknowledgeMode.DupsOkAcknowledge,
             _ => AcknowledgeMode.AutoAcknowledge
         });
-        
+
         _sessions.Add(session);
 
         return session;
@@ -47,22 +50,19 @@ internal class MQClient : IDisposable
 
     public void Stop() => _connection.Stop();
 
-    private void Dispose(bool disposing)
-    {
+    private void Dispose(bool disposing) {
         if (!disposing) return;
-        
+
         _sessions.ForEach(s => s.Dispose());
         _connection.Dispose();
     }
 
-    public void Dispose()
-    {
+    public void Dispose() {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-    
-    private void SetConnectionProperties(IConnectionFactory cf, out string? userId, out string? password) 
-    {
+
+    private void SetConnectionProperties(IConnectionFactory cf, out string? userId, out string? password) {
         cf.SetIntProperty(XMSC.WMQ_CLIENT_RECONNECT_OPTIONS, XMSC.WMQ_CLIENT_RECONNECT);
 
         if (_parameters.TryGetValue("Host", out var host) && !string.IsNullOrEmpty(host)) {
@@ -91,6 +91,18 @@ internal class MQClient : IDisposable
 
         if (_parameters.TryGetValue("AppName", out var appName)) {
             cf.SetStringProperty(XMSC.WMQ_APPLICATIONNAME, appName);
+        }
+
+        if (_parameters.TryGetValue("SSLCipherSuite", out var sslCipherSuite) && !string.IsNullOrEmpty(sslCipherSuite)) {
+            cf.SetStringProperty(XMSC.WMQ_SSL_CIPHER_SUITE, sslCipherSuite);
+        }
+
+        if (_parameters.TryGetValue("SSLPeerName", out var sslPeerName) && !string.IsNullOrEmpty(sslPeerName)) {
+            cf.SetStringProperty(XMSC.WMQ_SSL_PEER_NAME, sslPeerName);
+        }
+
+        if (_parameters.TryGetValue("SSLCertStore", out var sslCertStore) && !string.IsNullOrEmpty(sslCertStore)) {
+            cf.SetStringProperty(XMSC.WMQ_SSL_CERT_STORES, sslCertStore);
         }
 
         _parameters.TryGetValue("UserId", out userId);
