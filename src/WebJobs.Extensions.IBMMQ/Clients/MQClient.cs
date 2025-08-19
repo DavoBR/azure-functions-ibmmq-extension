@@ -93,6 +93,14 @@ internal class MQClient : IDisposable {
             cf.SetStringProperty(XMSC.WMQ_APPLICATIONNAME, appName);
         }
 
+        if (_parameters.TryGetValue("SSLCipherSpec", out var sslCipherSpec) && !string.IsNullOrEmpty(sslCipherSpec)) {
+            cf.SetStringProperty(XMSC.WMQ_SSL_CIPHER_SPEC, sslCipherSpec);
+        }
+
+        if (_parameters.TryGetValue("SSLCertLabel", out var sslCertLabel) && !string.IsNullOrEmpty(sslCertLabel)) {
+            cf.SetStringProperty(XMSC.WMQ_SSL_CLIENT_CERT_LABEL, sslCertLabel);
+        }
+
         if (_parameters.TryGetValue("SSLCipherSuite", out var sslCipherSuite) && !string.IsNullOrEmpty(sslCipherSuite)) {
             cf.SetStringProperty(XMSC.WMQ_SSL_CIPHER_SUITE, sslCipherSuite);
         }

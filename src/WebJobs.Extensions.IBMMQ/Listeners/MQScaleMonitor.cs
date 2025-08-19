@@ -42,6 +42,14 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
             [MQC.TRANSPORT_PROPERTY] = MQC.TRANSPORT_MQSERIES_MANAGED
         };
 
+        if (parameters.TryGetValue("SSLCipherSpec", out var sslCipherSpec)) {
+            properties[MQC.SSL_CIPHER_SPEC_PROPERTY] = sslCipherSpec;
+        }
+
+        if (parameters.TryGetValue("SSLCertLabel", out var sslCertLabel)) {
+            properties[MQC.CERT_LABEL_PROPERTY] = sslCertLabel;
+        }
+
         if (parameters.TryGetValue("SSLCipherSuite", out var sslCipherSuite)) {
             properties[MQC.SSL_CIPHER_SUITE_PROPERTY] = sslCipherSuite;
         }
