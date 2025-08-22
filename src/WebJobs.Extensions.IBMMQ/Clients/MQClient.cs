@@ -101,16 +101,12 @@ internal class MQClient : IDisposable {
             cf.SetStringProperty(XMSC.WMQ_SSL_CLIENT_CERT_LABEL, sslCertLabel);
         }
 
-        if (_parameters.TryGetValue("SSLCipherSuite", out var sslCipherSuite) && !string.IsNullOrEmpty(sslCipherSuite)) {
-            cf.SetStringProperty(XMSC.WMQ_SSL_CIPHER_SUITE, sslCipherSuite);
-        }
-
         if (_parameters.TryGetValue("SSLPeerName", out var sslPeerName) && !string.IsNullOrEmpty(sslPeerName)) {
             cf.SetStringProperty(XMSC.WMQ_SSL_PEER_NAME, sslPeerName);
         }
 
-        if (_parameters.TryGetValue("SSLCertStore", out var sslCertStore) && !string.IsNullOrEmpty(sslCertStore)) {
-            cf.SetStringProperty(XMSC.WMQ_SSL_CERT_STORES, sslCertStore);
+        if (_parameters.TryGetValue("SSLKeyRepo", out var sslKeyRepo) && !string.IsNullOrEmpty(sslKeyRepo)) {
+            cf.SetStringProperty(XMSC.WMQ_SSL_KEY_REPOSITORY, sslKeyRepo);
         }
 
         _parameters.TryGetValue("UserId", out userId);

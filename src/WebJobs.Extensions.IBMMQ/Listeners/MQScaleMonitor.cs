@@ -19,6 +19,8 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
         _queueName = queueName;
         _logger = logger;
 
+        //CreateConnection(); // uncomment this to test locally if the scale monitor connects to MQ
+
         Descriptor = new ScaleMonitorDescriptor($"{functionId}-MQQueueTrigger-{queueName}".ToLower(), functionId);
     }
 
@@ -58,8 +60,8 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
             properties[MQC.SSL_PEER_NAME_PROPERTY] = sslPeerName;
         }
 
-        if (parameters.TryGetValue("SSLCertStore", out var sslCertStore)) {
-            properties[MQC.SSL_CERT_STORE_PROPERTY] = sslCertStore;
+        if (parameters.TryGetValue("SSLKeyRepo", out var sslKeyRepo)) {
+            properties[MQC.SSL_CERT_STORE_PROPERTY] = sslKeyRepo;
         }
 
         if (parameters.TryGetValue("UserId", out var userId)) {

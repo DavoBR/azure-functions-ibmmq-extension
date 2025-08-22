@@ -30,7 +30,7 @@ internal class MQTriggerValueProvider : IValueProvider
         } else if (Type == typeof(byte[]) && _input is IBytesMessage bytesMessage) {
             obj = MessageConverters.MessageToBytes(bytesMessage);
         } else if (Type == typeof(string) && _input is ITextMessage textMessage) {
-            obj = MessageConverters.MessageToBytes(textMessage);
+            obj = MessageConverters.MessageToString(textMessage);
         }  else {
             throw new InvalidOperationException(_convertError.Value);
         }

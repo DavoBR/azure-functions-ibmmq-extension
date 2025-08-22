@@ -1,5 +1,5 @@
 {
-    "azureFunctions.projectSubpath": "samples/Worker.Extensions.Samples",
+    "azureFunctions.projectSubpath": "samples/WebJobs.Extensions.Samples",
     "azureFunctions.projectLanguage": "C#",
     "azureFunctions.projectRuntime": "~4",
     "debug.internalConsoleOptions": "neverOpen",

@@ -11,7 +11,7 @@
         <Version>1.1.0</Version>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="IBMXMSDotnetClient" Version="9.4.1" />
+      <PackageReference Include="IBMXMSDotnetClient" Version="9.4.3" />
       <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.41" />
     </ItemGroup>
 </Project>

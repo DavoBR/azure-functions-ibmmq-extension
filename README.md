@@ -11,11 +11,43 @@ functions that respond to any message published to IBM MQ.
 | MQQueueInput   | in        | Get a message from queue                         |
 | MQQueueOutput  | out       | Put a message to queue                           |
 
+## Example connection strings
+
+As value for `MQ_CONNECTION_STRING`.
+
+Certificate authentication:
+
+`Host=192.168.50.209;Port=1414;Channel=DEV.APP.SVRCONN;SSLCipherSpec=TLS_RSA_WITH_AES_256_CBC_SHA256;SSLCertLabel=mykey;SSLKeyRepo=*USER`
+
+Password authentication:
+
+`Host=localhost;Port=1414;Channel=DEV.APP.SVRCONN;UserId=app;Password=passw0rd`
+
 ## Running examples
 
-If you don't have an MQ server available you can quickly have one using docker and running the following command, then
-you can run the ```Worker.Extensions.Samples``` project
+If you don't have an MQ server available you can quickly have one using docker and running the following command:
 
 ```bash
 docker run -e LICENSE=accept -e MQ_QMGR_NAME=QMGR -p 1414:1414 -p 9443:9443 -detach --name QMGR icr.io/ibm-messaging/mq:latest
 ```
+
+To configure certificate authentication on the MQ-side, consider the following `.mqsc` script, which you can place into the container at `/etc/mqm/` and it will automatically execute:
+
+```
+-- Enable SSL/TLS on the SVRCONN channel
+ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) SSLCIPH('ANY_TLS12')
+
+-- Optional: Require clients to present a valid certificate for authentication
+ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) SSLCAUTH(REQUIRED)
+
+-- Optional but recommended: Disable CHLAUTH temporarily to allow SSL-based access
+ALTER QMGR CHLAUTH(DISABLED)
+
+-- Apply and refresh SSL security settings
+REFRESH SECURITY TYPE(SSL)
+```
+
+Then you can run either:
+
+1. the `Worker.Extensions.Samples` project. Please note that this uses the assembly from NuGet, read more about it [here](https://blog.maartenballiauw.be/post/2021/06/01/custom-bindings-with-azure-functions-dotnet-isolated-worker.html).
+1. the `WebJobs.Extensions.Samples` project. This runs the binding directly from [/src/](./src/).
