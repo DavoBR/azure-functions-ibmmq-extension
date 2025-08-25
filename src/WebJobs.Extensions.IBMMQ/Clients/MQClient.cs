@@ -74,21 +74,21 @@ internal class MQClient : IDisposable
         if (_parameters.TryGetValue("Host", out var host) && !string.IsNullOrEmpty(host)) {
             cf.SetStringProperty(XMSC.WMQ_HOST_NAME, host);
         } else {
-            throw new InvalidOperationException("El parametro Host no esta configurado en el connection string");
+            throw new InvalidOperationException("The 'Host' parameter is not configured in the connection string");
         }
 
         if (_parameters.TryGetValue("Port", out var portText)) {
             if (int.TryParse(portText, out var port)) {
                 cf.SetIntProperty(XMSC.WMQ_PORT, port);
             } else {
-                throw new InvalidOperationException("El parametro Port no es un valor valido");
+                throw new InvalidOperationException("The 'Port' parameter is not a valid value");
             }
         }
 
         if (_parameters.TryGetValue("Channel", out var channel) && !string.IsNullOrEmpty(channel)) {
             cf.SetStringProperty(XMSC.WMQ_CHANNEL, channel);
         } else {
-            throw new InvalidOperationException("El parametro Channel no esta configurado en el connection string");
+            throw new InvalidOperationException("The 'Channel' parameter is not configured in the connection string");
         }
 
         if (_parameters.TryGetValue("QueueManager", out var qmgr)) {
