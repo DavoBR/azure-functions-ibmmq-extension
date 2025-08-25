@@ -69,8 +69,9 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
             _logger.LogInformation("MQ listener started ({Details})", _details);
 
         } catch (Exception ex) {
-            _logger.LogError(ex, "Can't start MQ listener ({Details})", _details);
-            throw;
+            var exceptionMessage = "Can't start MQ listener";
+            _logger.LogError(ex, "{ExceptionMessage} ({Details})", exceptionMessage, _details);
+            throw new InvalidOperationException(exceptionMessage, ex);
         }
 
         return Task.CompletedTask;
