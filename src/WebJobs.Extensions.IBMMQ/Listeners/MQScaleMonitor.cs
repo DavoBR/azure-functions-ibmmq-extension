@@ -132,7 +132,7 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics>
         var isIdle = metrics.All(m => m.MessageCount == 0);
         if (isIdle) {
             status.Vote = ScaleVote.ScaleIn;
-            _logger.LogInformation("'{QueueName}' is idle", _queueName);
+            _logger.LogInformation("'{QueueName}' is idle, with worker count {WorkerCount}", _queueName, workerCount);
             return status;
         }
 
@@ -147,7 +147,7 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics>
 
             if (msgCountIncreasing) {
                 status.Vote = ScaleVote.ScaleOut;
-                _logger.LogInformation("Message count is increasing for '{QueueName}'", _queueName);
+                _logger.LogInformation("Message count is increasing for '{QueueName}', with worker count {WorkerCount}", _queueName, workerCount);
                 return status;
             }
         }
@@ -160,11 +160,11 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics>
 
         if (msgCountDecreasing) {
             status.Vote = ScaleVote.ScaleIn;
-            _logger.LogInformation("Message count is decreasing for '{QueueName}'", _queueName);
+            _logger.LogInformation("Message count is decreasing for '{QueueName}', with worker count {WorkerCount}", _queueName, workerCount);
             return status;
         }
 
-        _logger.LogInformation("Queue '{QueueName}' is steady", _queueName);
+        _logger.LogInformation("Queue '{QueueName}' is steady, with worker count {WorkerCount}", _queueName, workerCount);
 
         return status;
     }
