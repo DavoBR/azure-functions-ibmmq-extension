@@ -13,16 +13,16 @@ internal static class ConnectionStringHelper
                 kv => kv[1],
                 StringComparer.OrdinalIgnoreCase);
 
-        if (!parameters.TryGetValue("Host", out var hostName)) {
-            throw new InvalidOperationException("The property Host is required in the connection string");
+        if (!parameters.ContainsKey("Host")) {
+            throw new InvalidOperationException("The property 'Host' is required in the connection string");
         }
 
-        if (!parameters.TryGetValue("Port", out var port)) {
-            throw new InvalidOperationException("The property Port is required in the connection string");
+        if (!parameters.ContainsKey("Port")) {
+            throw new InvalidOperationException("The property 'Port' is required in the connection string");
         }
 
-        if (!parameters.TryGetValue("Channel", out var channelName)) {
-            throw new InvalidOperationException("The property Channel is required in the connection string");
+        if (!parameters.ContainsKey("Channel")) {
+            throw new InvalidOperationException("The property 'Channel' is required in the connection string");
         }
 
         return parameters;

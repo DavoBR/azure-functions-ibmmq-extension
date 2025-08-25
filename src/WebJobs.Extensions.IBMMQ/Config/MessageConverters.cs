@@ -14,6 +14,24 @@ internal static class MessageConverters
         };
     }
 
+    public static string? MessageToString(MQMessage message)
+    {
+        if (message is MQTextMessage textMessage) {
+            return textMessage.Text;
+        }
+
+        throw new InvalidOperationException("Not Text Message");
+    }
+
+    public static byte[]? MessageToBytes(MQMessage message)
+    {
+        if (message is MQBytesMessage bytesMessage) {
+            return bytesMessage.Bytes;
+        }
+
+        throw new InvalidOperationException("Not Bytes Message");
+    }
+
     public static byte[]? MessageToBytes(IMessage? message)
     {
         switch (message) {
@@ -65,27 +83,9 @@ internal static class MessageConverters
         return new MQBytesMessage(bytes);
     }
 
-    public static byte[]? MessageToBytes(MQMessage message)
-    {
-        if (message is MQBytesMessage bytesMessage) {
-            return bytesMessage.Bytes;
-        }
-
-        throw new InvalidOperationException("Not Bytes Message");
-    }
-
     public static MQMessage StringToMessage(string text)
     {
         return new MQTextMessage(text);
-    }
-
-    public static string? MessageToString(MQMessage message)
-    {
-        if (message is MQTextMessage textMessage) {
-            return textMessage.Text;
-        }
-
-        throw new InvalidOperationException("Not Text Message");
     }
 
     private static TMessage CreateMessage<TMessage>(IMessage source) where TMessage : MQMessage
