@@ -36,8 +36,8 @@ internal class MQBindingConverter : IConverter<MQQueueAttribute, IMessage>
             client.Start();
 
             return consumer.ReceiveNoWait();
-        } catch (Exception) {
-            logger.LogError("Error receive message ({Details}", details);
+        } catch (Exception ex) {
+            logger.LogError(ex, "Error receive message ({Details}", details);
             throw;
         } finally {
             consumer?.Dispose();

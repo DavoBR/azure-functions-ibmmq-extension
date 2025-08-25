@@ -68,8 +68,8 @@ internal class MQBindingCollector : IAsyncCollector<MQMessage>
 
         try {
             producer.Send(xmsMessage);
-        } catch (Exception) {
-            _logger.LogError("Can't send message to queue ({Details})", _details);
+        } catch (Exception ex) {
+            _logger.LogError(ex, "Can't send message to queue ({Details})", _details);
             throw;
         }
 
