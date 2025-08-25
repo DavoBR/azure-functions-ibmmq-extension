@@ -1,4 +1,3 @@
-using Azure.WebJobs.Extensions.IBMMQ;
 using Azure.WebJobs.Extensions.IBMMQ.Clients;
 using Azure.WebJobs.Extensions.IBMMQ.Config;
 using Microsoft.Azure.WebJobs;

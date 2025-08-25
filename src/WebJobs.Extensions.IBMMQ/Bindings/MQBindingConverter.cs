@@ -1,5 +1,4 @@
 using Azure.WebJobs.Extensions.IBMMQ.Config;
-using Azure.WebJobs.Extensions.IBMMQ.Clients;
 using IBM.XMS;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;

@@ -1,6 +1,5 @@
 using System.Reflection;
 using Azure.WebJobs.Extensions.IBMMQ.Clients;
-using IBM.XMS;
 using Microsoft.Extensions.Logging;
 
 namespace Azure.WebJobs.Extensions.IBMMQ.Triggers;

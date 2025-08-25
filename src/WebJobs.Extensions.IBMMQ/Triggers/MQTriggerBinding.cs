@@ -1,6 +1,5 @@
 using Azure.WebJobs.Extensions.IBMMQ.Listeners;
 using IBM.XMS;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Host.Listeners;
 using Microsoft.Azure.WebJobs.Host.Protocols;
