@@ -21,7 +21,7 @@ internal class MQExtensionConfigProvider : IExtensionConfigProvider
     private readonly IConfiguration _config;
     private readonly ILoggerFactory _loggerFactory;
     private readonly MQClientFactory _clientFactory;
-    
+
     public MQExtensionConfigProvider(
         INameResolver nameResolver,
         IConfiguration config,
@@ -33,39 +33,39 @@ internal class MQExtensionConfigProvider : IExtensionConfigProvider
         _loggerFactory = loggerFactory;
         _clientFactory = clientFactory;
     }
-    
+
     public void Initialize(ExtensionConfigContext context)
     {
-         context 
-            // IMessage -> string
-            .AddConverter<IMessage, string?>(MessageConverters.MessageToString)
-            // IMessage -> byte[]
-            .AddConverter<IMessage, byte[]?>(MessageConverters.MessageToBytes)
-            // IMessage -> MQMessage
-            .AddConverter<IMessage, MQMessage?>(MessageConverters.MessageToMessage)
-            // IMessage -> MQTextMessage
-            .AddConverter<IMessage, MQTextMessage?>(MessageConverters.MessageToTextMessage)
-            // IBytesMessage -> MQBytesMessage
-            .AddConverter<IMessage, MQBytesMessage?>(MessageConverters.MessageToBytesMessage)
-            // byte[] <-> MQBaseMessage
-            .AddConverter<byte[], MQMessage>(MessageConverters.BytesToMessage)
-            .AddConverter<MQMessage, byte[]?>(MessageConverters.MessageToBytes)
-            // string <-> MQBaseMessage
-            .AddConverter<string, MQMessage>(MessageConverters.StringToMessage)
-            .AddConverter<MQMessage, string?>(MessageConverters.MessageToString);
+        context
+           // IMessage -> string
+           .AddConverter<IMessage, string?>(MessageConverters.MessageToString)
+           // IMessage -> byte[]
+           .AddConverter<IMessage, byte[]?>(MessageConverters.MessageToBytes)
+           // IMessage -> MQMessage
+           .AddConverter<IMessage, MQMessage?>(MessageConverters.MessageToMessage)
+           // IMessage -> MQTextMessage
+           .AddConverter<IMessage, MQTextMessage?>(MessageConverters.MessageToTextMessage)
+           // IBytesMessage -> MQBytesMessage
+           .AddConverter<IMessage, MQBytesMessage?>(MessageConverters.MessageToBytesMessage)
+           // byte[] <-> MQBaseMessage
+           .AddConverter<byte[], MQMessage>(MessageConverters.BytesToMessage)
+           .AddConverter<MQMessage, byte[]?>(MessageConverters.MessageToBytes)
+           // string <-> MQBaseMessage
+           .AddConverter<string, MQMessage>(MessageConverters.StringToMessage)
+           .AddConverter<MQMessage, string?>(MessageConverters.MessageToString);
 
         // register trigger binding provider
         var triggerBindingRule = context.AddBindingRule<MQQueueTriggerAttribute>();
-        triggerBindingRule.AddValidator((attr, _) 
+        triggerBindingRule.AddValidator((attr, _)
             => ValidateConnection(attr.Connection, $"{nameof(MQQueueTriggerAttribute)}.{nameof(MQQueueTriggerAttribute.Connection)}"));
 
         triggerBindingRule.BindToTrigger(new MQTriggerAttributeBindingProvider(this));
 
         // register binding provider
         var bindingRule = context.AddBindingRule<MQQueueAttribute>();
-        bindingRule.AddValidator((attr, _) 
+        bindingRule.AddValidator((attr, _)
             => ValidateConnection(attr.Connection, $"{nameof(MQQueueAttribute)}.{nameof(MQQueueAttribute.Connection)}"));
-        
+
         bindingRule.BindToInput(new MQBindingConverter(this));
         bindingRule.BindToCollector(new MQBindingCollectorConverter(this));
     }

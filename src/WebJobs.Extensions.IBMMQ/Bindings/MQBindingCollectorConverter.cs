@@ -11,7 +11,7 @@ internal class MQBindingCollectorConverter : IConverter<MQQueueAttribute, IAsync
     {
         _configProvider = configProvider;
     }
-    
+
     public IAsyncCollector<MQMessage> Convert(MQQueueAttribute attribute)
     {
         return new MQBindingCollector(_configProvider.CreateContext(attribute, "MQQueue-Output"));

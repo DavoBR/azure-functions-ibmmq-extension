@@ -10,7 +10,7 @@ public static class MQOutputSample
     public static string RunAsync([TimerTrigger("* * * * *")] TimerInfo timerInfo, FunctionContext context)
     {
         var log = context.GetLogger(nameof(MQOutputSample));
-        
+
         var output = $"Hello World {DateTime.Now}";
 
         log.LogInformation("========== MQOUTPUT ========================");

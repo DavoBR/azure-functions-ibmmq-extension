@@ -2,8 +2,10 @@ using IBM.XMS;
 
 namespace Azure.WebJobs.Extensions.IBMMQ.Config;
 
-internal static class MessageConverters {
-    public static string? MessageToString(IMessage? message) {
+internal static class MessageConverters
+{
+    public static string? MessageToString(IMessage? message)
+    {
         return message switch {
             null => null,
             ITextMessage textMessage => textMessage.Text,
@@ -12,7 +14,8 @@ internal static class MessageConverters {
         };
     }
 
-    public static byte[]? MessageToBytes(IMessage? message) {
+    public static byte[]? MessageToBytes(IMessage? message)
+    {
         switch (message) {
             case null:
                 return null;
@@ -27,7 +30,8 @@ internal static class MessageConverters {
         }
     }
 
-    public static MQMessage? MessageToMessage(IMessage? message) {
+    public static MQMessage? MessageToMessage(IMessage? message)
+    {
         switch (message) {
             case null:
                 return null;
@@ -46,19 +50,23 @@ internal static class MessageConverters {
         }
     }
 
-    public static MQTextMessage? MessageToTextMessage(IMessage? message) {
+    public static MQTextMessage? MessageToTextMessage(IMessage? message)
+    {
         return MessageToMessage(message) as MQTextMessage;
     }
 
-    public static MQBytesMessage? MessageToBytesMessage(IMessage message) {
+    public static MQBytesMessage? MessageToBytesMessage(IMessage message)
+    {
         return MessageToMessage(message) as MQBytesMessage;
     }
 
-    public static MQMessage BytesToMessage(byte[] bytes) {
+    public static MQMessage BytesToMessage(byte[] bytes)
+    {
         return new MQBytesMessage(bytes);
     }
 
-    public static byte[]? MessageToBytes(MQMessage message) {
+    public static byte[]? MessageToBytes(MQMessage message)
+    {
         if (message is MQBytesMessage bytesMessage) {
             return bytesMessage.Bytes;
         }
@@ -66,11 +74,13 @@ internal static class MessageConverters {
         throw new InvalidOperationException("Not Bytes Message");
     }
 
-    public static MQMessage StringToMessage(string text) {
+    public static MQMessage StringToMessage(string text)
+    {
         return new MQTextMessage(text);
     }
 
-    public static string? MessageToString(MQMessage message) {
+    public static string? MessageToString(MQMessage message)
+    {
         if (message is MQTextMessage textMessage) {
             return textMessage.Text;
         }
@@ -78,7 +88,8 @@ internal static class MessageConverters {
         throw new InvalidOperationException("Not Text Message");
     }
 
-    private static TMessage CreateMessage<TMessage>(IMessage source) where TMessage : MQMessage {
+    private static TMessage CreateMessage<TMessage>(IMessage source) where TMessage : MQMessage
+    {
         var message = Activator.CreateInstance<TMessage>();
 
         message.Format = source.GetStringProperty(XMSC.JMS_IBM_FORMAT);

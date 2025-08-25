@@ -4,7 +4,7 @@ public class MQBytesMessage : MQMessage
 {
     public byte[]? Bytes { get; set; }
 
-    public MQBytesMessage() {}
-    
+    public MQBytesMessage() { }
+
     public MQBytesMessage(byte[]? bytes) => Bytes = bytes;
 }

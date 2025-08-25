@@ -16,13 +16,13 @@ internal class MQTriggerValueProvider : IValueProvider
             $"Unable to convert {_input.GetType().Name} to '{Type}'. Check function method signature");
         Type = destinationType;
     }
-    
+
     public Type Type { get; }
-    
+
     public Task<object?> GetValueAsync()
     {
         object? obj;
-        
+
         if (Type.IsInstanceOfType(_input)) {
             obj = _input;
         } else if (typeof(MQMessage).IsAssignableFrom(Type)) {
@@ -31,7 +31,7 @@ internal class MQTriggerValueProvider : IValueProvider
             obj = MessageConverters.MessageToBytes(bytesMessage);
         } else if (Type == typeof(string) && _input is ITextMessage textMessage) {
             obj = MessageConverters.MessageToString(textMessage);
-        }  else {
+        } else {
             throw new InvalidOperationException(_convertError.Value);
         }
 
@@ -45,6 +45,6 @@ internal class MQTriggerValueProvider : IValueProvider
             _ => $"[Input type {_input.GetType().Name} expected ITextMessage or String]"
         };
     }
-    
-    
+
+
 }

@@ -7,10 +7,11 @@ namespace Microsoft.Azure.WebJobs;
 [Binding]
 public class MQQueueTriggerAttribute : Attribute
 {
-    public MQQueueTriggerAttribute(string queueName) {
+    public MQQueueTriggerAttribute(string queueName)
+    {
         QueueName = queueName;
     }
-    
+
     /// <summary>
     /// El nombre de la cola 
     /// </summary>

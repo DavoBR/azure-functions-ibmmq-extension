@@ -9,12 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Azure.WebJobs.Extensions.IBMMQ.Listeners;
 
-internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
+internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics>
+{
     private readonly string _connectionString;
     private readonly string _queueName;
     private readonly ILogger _logger;
 
-    public MQScaleMonitor(string functionId, string connectionString, string queueName, ILogger logger) {
+    public MQScaleMonitor(string functionId, string connectionString, string queueName, ILogger logger)
+    {
         _connectionString = connectionString;
         _queueName = queueName;
         _logger = logger;
@@ -26,11 +28,13 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
 
     public ScaleMonitorDescriptor Descriptor { get; }
 
-    async Task<ScaleMetrics> IScaleMonitor.GetMetricsAsync() {
+    async Task<ScaleMetrics> IScaleMonitor.GetMetricsAsync()
+    {
         return await GetMetricsAsync();
     }
 
-    private MQQueueManager CreateConnection() {
+    private MQQueueManager CreateConnection()
+    {
         var parameters = ConnectionStringHelper.Parse(_connectionString);
 
         parameters.TryGetValue("QueueManager", out var queueManagerName);
@@ -75,7 +79,8 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
         return new MQQueueManager(queueManagerName, properties);
     }
 
-    public Task<MQTriggerMetrics> GetMetricsAsync() {
+    public Task<MQTriggerMetrics> GetMetricsAsync()
+    {
         var metrics = new MQTriggerMetrics();
 
         _logger.LogInformation("Connecting to queue manager {ConnectionString}", _connectionString);
@@ -95,15 +100,18 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
         return Task.FromResult(metrics);
     }
 
-    ScaleStatus IScaleMonitor.GetScaleStatus(ScaleStatusContext context) {
+    ScaleStatus IScaleMonitor.GetScaleStatus(ScaleStatusContext context)
+    {
         return GetScaleStatusCore(context.WorkerCount, context.Metrics?.Cast<MQTriggerMetrics>().ToArray());
     }
 
-    public ScaleStatus GetScaleStatus(ScaleStatusContext<MQTriggerMetrics> context) {
+    public ScaleStatus GetScaleStatus(ScaleStatusContext<MQTriggerMetrics> context)
+    {
         return GetScaleStatusCore(context.WorkerCount, context.Metrics?.ToArray());
     }
 
-    private ScaleStatus GetScaleStatusCore(int workerCount, IList<MQTriggerMetrics>? metrics) {
+    private ScaleStatus GetScaleStatusCore(int workerCount, IList<MQTriggerMetrics>? metrics)
+    {
         var status = new ScaleStatus {
             Vote = ScaleVote.None
         };
@@ -161,7 +169,8 @@ internal class MQScaleMonitor : IScaleMonitor<MQTriggerMetrics> {
         return status;
     }
 
-    private static bool IsTrueForLastN(IList<MQTriggerMetrics> samples, int count, Func<MQTriggerMetrics, MQTriggerMetrics, bool> predicate) {
+    private static bool IsTrueForLastN(IList<MQTriggerMetrics> samples, int count, Func<MQTriggerMetrics, MQTriggerMetrics, bool> predicate)
+    {
         // Walks through the list from left to right starting at len(samples) - count.
         for (var i = samples.Count - count; i < samples.Count - 1; i++) {
             if (!predicate(samples[i], samples[i + 1])) {

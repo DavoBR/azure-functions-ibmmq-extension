@@ -14,7 +14,7 @@ namespace Azure.WebJobs.Extensions.IBMMQ.Triggers;
 internal class MQTriggerAttributeBindingProvider : ITriggerBindingProvider
 {
     private readonly MQExtensionConfigProvider _configProvider;
-    
+
     public MQTriggerAttributeBindingProvider(MQExtensionConfigProvider configProvider)
     {
         _configProvider = configProvider;

@@ -11,7 +11,7 @@ internal class MQTriggerContext
     public string QueueName { get; set; } = null!;
 
     public string ConnectionString { get; set; } = null!;
-    
+
     public ILogger Logger = null!;
 
     public ParameterInfo ParameterInfo = null!;

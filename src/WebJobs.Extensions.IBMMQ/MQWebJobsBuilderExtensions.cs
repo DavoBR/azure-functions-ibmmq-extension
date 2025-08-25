@@ -17,11 +17,12 @@ public static class MQWebJobsBuilderExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IWebJobsBuilder"/> to configure.</param>
     // ReSharper disable once InconsistentNaming
-    public static IWebJobsBuilder AddIBMMQ(this IWebJobsBuilder builder) {
+    public static IWebJobsBuilder AddIBMMQ(this IWebJobsBuilder builder)
+    {
         builder.AddExtension<MQExtensionConfigProvider>();
-        
+
         builder.Services.TryAddSingleton<MQClientFactory>();
-        
+
         return builder;
     }
 }

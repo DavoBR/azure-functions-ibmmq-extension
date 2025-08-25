@@ -9,7 +9,8 @@ namespace Azure.WebJobs.Extensions.IBMMQ;
 
 public class MQWebJobsStartup : IWebJobsStartup
 {
-    public void Configure(IWebJobsBuilder builder) {
+    public void Configure(IWebJobsBuilder builder)
+    {
         builder.AddIBMMQ();
     }
 }

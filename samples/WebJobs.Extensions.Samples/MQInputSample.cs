@@ -16,7 +16,7 @@ public static class MQInputSample
         log.LogInformation("Message ID: {MessageId}", messageId);
         log.LogInformation("Message Body: {MessageBody}", input);
         log.LogInformation("========== MQINPUT ========================");
-        
+
         output = input;
 
         return Task.CompletedTask;

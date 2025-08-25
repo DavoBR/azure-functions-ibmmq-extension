@@ -11,8 +11,8 @@ namespace Azure.WebJobs.Extensions.IBMMQ.Triggers;
 internal class MQTriggerBinding : ITriggerBinding
 {
     private readonly MQTriggerContext _context;
-    
-    public MQTriggerBinding(MQTriggerContext context) 
+
+    public MQTriggerBinding(MQTriggerContext context)
     {
         _context = context;
 
@@ -20,7 +20,7 @@ internal class MQTriggerBinding : ITriggerBinding
     }
 
     public Type TriggerValueType => typeof(IMessage);
-    
+
     public IReadOnlyDictionary<string, Type> BindingDataContract { get; }
 
     public Task<ITriggerData> BindAsync(object value, ValueBindingContext context)
@@ -28,25 +28,26 @@ internal class MQTriggerBinding : ITriggerBinding
         var message = (IMessage)value;
         var valueProvider = new MQTriggerValueProvider(message, _context.ParameterInfo.ParameterType);
         var bindingData = CreateBindingData(message);
-        
+
         return Task.FromResult<ITriggerData>(new TriggerData(valueProvider, bindingData));
     }
 
-    public Task<IListener> CreateListenerAsync(ListenerFactoryContext context) {
+    public Task<IListener> CreateListenerAsync(ListenerFactoryContext context)
+    {
         return Task.FromResult<IListener>(new MQListener(context.Descriptor.Id, context.Executor, _context));
     }
 
-    public ParameterDescriptor ToParameterDescriptor() {
-        return new MQTriggerParamaterDescryptor(_context.QueueName){
+    public ParameterDescriptor ToParameterDescriptor()
+    {
+        return new MQTriggerParamaterDescryptor(_context.QueueName) {
             Name = _context.ParameterInfo.Name,
             Type = "MQQueueTrigger"
-        }; 
+        };
     }
-    
+
     private static IReadOnlyDictionary<string, Type> CreateBindingDataContract()
     {
-        return new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
-        {
+        return new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase) {
             ["MessageId"] = typeof(string),
             ["CorrelationId"] = typeof(string),
             ["ReplyTo"] = typeof(string),
@@ -75,8 +76,7 @@ internal class MQTriggerBinding : ITriggerBinding
 
     private static void SafeAddValue(Action addValue)
     {
-        try
-        {
+        try {
             addValue();
         } catch (Exception) {
             // some message property getters can throw, based on the

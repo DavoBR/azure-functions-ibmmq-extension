@@ -3,14 +3,16 @@ using IBM.XMS;
 
 namespace Azure.WebJobs.Extensions.IBMMQ.Clients;
 
-internal class MQClient : IDisposable {
+internal class MQClient : IDisposable
+{
     private readonly IDictionary<string, string> _parameters;
     private readonly IConnection _connection;
     private readonly List<ISession> _sessions = [];
 
     public event ExceptionListener? ExceptionListener;
 
-    public MQClient(string connectionString) {
+    public MQClient(string connectionString)
+    {
         _parameters = ConnectionStringHelper.Parse(connectionString);
 
         // Create XMS Factory
@@ -30,7 +32,8 @@ internal class MQClient : IDisposable {
         _connection.ExceptionListener += ex => ExceptionListener?.Invoke(ex);
     }
 
-    public ISession CreateSession() {
+    public ISession CreateSession()
+    {
         _parameters.TryGetValue("AckMode", out var ackMode);
 
         // https://www.ibm.com/docs/en/ibm-mq/8.0?topic=sessions-message-acknowledgement#xms_cmesack
@@ -50,19 +53,22 @@ internal class MQClient : IDisposable {
 
     public void Stop() => _connection.Stop();
 
-    private void Dispose(bool disposing) {
+    private void Dispose(bool disposing)
+    {
         if (!disposing) return;
 
         _sessions.ForEach(s => s.Dispose());
         _connection.Dispose();
     }
 
-    public void Dispose() {
+    public void Dispose()
+    {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
 
-    private void SetConnectionProperties(IConnectionFactory cf, out string? userId, out string? password) {
+    private void SetConnectionProperties(IConnectionFactory cf, out string? userId, out string? password)
+    {
         cf.SetIntProperty(XMSC.WMQ_CLIENT_RECONNECT_OPTIONS, XMSC.WMQ_CLIENT_RECONNECT);
 
         if (_parameters.TryGetValue("Host", out var host) && !string.IsNullOrEmpty(host)) {

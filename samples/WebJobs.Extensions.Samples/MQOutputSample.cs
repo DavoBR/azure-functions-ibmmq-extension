@@ -18,7 +18,7 @@ public static class MQOutputSample
         log.LogInformation("========== MQOUTPUT ========================");
 
         output = input;
-        
+
         return Task.CompletedTask;
     }
 }
