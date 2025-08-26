@@ -40,6 +40,9 @@ services:
     volumes:
       - ./certs/dev.cert.pem:/etc/mqm/pki/keys/devcert.pem:ro
       - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
+      - ./setup-mq-tls.sh:/etc/mqm/setup-mq-tls.sh:ro
+    # uncomment 'command' to setup TLS on queue manager QMGR
+    # command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QMGR && strmqm QMGR && tail -f /dev/null"
     networks:
       - network_func_mq
   

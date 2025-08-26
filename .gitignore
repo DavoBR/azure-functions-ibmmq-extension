@@ -3,6 +3,7 @@ azurite_data/*
 !azurite_data/.gitkeep
 
 # Ignore developer certificate files
+certs/
 .devcontainer/certs/
 
 ## Ignore Visual Studio temporary files, build results, and
