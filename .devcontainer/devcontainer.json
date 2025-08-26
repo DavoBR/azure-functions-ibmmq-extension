@@ -26,6 +26,8 @@
     1414,
     9443
   ],
+  "postStartCommand": "sudo bash .devcontainer/generate-cert.sh",
   "postCreateCommand": "dotnet restore",
   "remoteUser": "vscode"
+  // no need to mount the dev certificate to devcontainer
 }

@@ -11,6 +11,7 @@ services:
     tty: true
     stdin_open: true
     container_name: devcontainer
+    # first start the devcontainer and generate certs for the MQ service
     depends_on:
       - qmgr
     networks:
@@ -33,6 +34,12 @@ services:
       - 1414:1414
       - 9443:9443
       - 9157:9157
+    # depends_on:
+    #   # wait for the devcontainer to be ready generating the certs...
+    #   - devcontainer
+    volumes:
+      - ./certs/dev.cert.pem:/etc/mqm/pki/keys/devcert.pem:ro
+      - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
     networks:
       - network_func_mq
   

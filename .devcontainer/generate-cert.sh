@@ -2,7 +2,7 @@
 set -e
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
-CERT_DIR="$GIT_ROOT/certs"
+CERT_DIR="$GIT_ROOT/.devcontainer/certs"
 CERT_KEY="${CERT_DIR}/dev.key.pem"
 CERT_CRT="${CERT_DIR}/dev.cert.pem"
 CERT_NAME="dev-cert"
