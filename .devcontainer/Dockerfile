@@ -5,10 +5,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     apt-transport-https \
     ca-certificates \
-    gnupg \
-    libcurl4 \
-    libicu-dev \
-    libssl-dev \
     lsb-release \
     software-properties-common \
     unzip \
@@ -18,7 +14,6 @@ RUN apt-get update && apt-get install -y \
 # Add the Zscaler public certificates (CA and intermediates) to the image
 # If Zscaler is not used, then no harm is done.
 COPY  certs/Zscaler_Intermediate_Root_CA_zscaler.net.crt \
-      certs/Zscaler_Intermediate_Root_CA_zscaler.net_t.crt \
       certs/Zscaler_Intermediate_Root_CA_zscaler.net_t_until_06_sept_2025.crt \
       certs/Zscaler_Root_CA.crt \
       /usr/local/share/ca-certificates/
