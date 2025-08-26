@@ -1,0 +1,54 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "functiondevcontainer:1.0"
+    volumes:
+      - ..:/workspace:cached
+    ports:
+      - "7071:7071"
+    tty: true
+    stdin_open: true
+    container_name: devcontainer
+    depends_on:
+      - qmgr
+    networks:
+      - network_func_mq
+
+  qmgr:
+    image: icr.io/ibm-messaging/mq:latest
+    container_name: QMGR
+    environment:
+      - LICENSE=accept
+      # MQ_*_PASSWORD variables are deprecated, use secrets instead
+      # see:  https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_DEV=true
+      - MQ_QMGR_NAME=QMGR
+      - MQ_ENABLE_METRICS=true
+      - TZ=Europe/Amsterdam
+    ports:
+      - 1414:1414
+      - 9443:9443
+      - 9157:9157
+    networks:
+      - network_func_mq
+  
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - 10000:10000
+    command: "azurite-blob --blobHost 0.0.0.0 --location /data"
+    volumes:
+      # use a local folder in the root of your project
+      # exclude the contents of the folder in gitignore
+      - ../azurite_data:/data
+    networks:
+      - network_func_mq
+
+networks:
+  network_func_mq:
+    driver: bridge

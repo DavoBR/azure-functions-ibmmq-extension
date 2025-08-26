@@ -1,0 +1,31 @@
+{
+  // using in-process instead of more modern isolated Functions
+  // because this helps during development of custom bindings
+  // see: https://github.com/Azure/azure-functions-dotnet-worker/issues/2092
+  "name": "Azure Functions In-Process (.NET 8)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "runServices": [
+    "qmgr"
+  ],
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-azuretools.vscode-azurefunctions",
+        "ms-vscode.azurecli"
+      ]
+    }
+  },
+  "forwardPorts": [
+    7071,
+    1414,
+    9443
+  ],
+  "postCreateCommand": "dotnet restore",
+  "remoteUser": "vscode"
+}

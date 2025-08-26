@@ -1,9 +1,9 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFeqCnf2P==;BlobEndpoint=http://azurite:10000/devstoreaccount1;",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "MQ_CONNECTION_STRING": "Host=192.168.50.209;Port=1414;Channel=DEV.APP.SVRCONN;SSLCertLabel=mykey;SSLKeyRepo=*USER",
+    "MQ_CONNECTION_STRING": "Host=qmgr;Port=1414;Channel=DEV.APP.SVRCONN;UserId=app;Password=passw0rd",
     "MQ_QUEUE_INPUT": "DEV.QUEUE.1",
     "MQ_QUEUE_OUTPUT": "DEV.QUEUE.2"
   }
