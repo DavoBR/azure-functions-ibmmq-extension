@@ -6,5 +6,9 @@
     "MQ_CONNECTION_STRING": "Host=ibmmq;Port=1414;Channel=DEV.APP.SVRCONN;UserId=app;Password=passw0rd",
     "MQ_QUEUE_INPUT": "DEV.QUEUE.1",
     "MQ_QUEUE_OUTPUT": "DEV.QUEUE.2"
+  },
+  "Comments": {
+    "ConnectionSettings": "When using devcontainer, use service names from docker-compose as hosts (azurite, ibmmq, etc)",
+    "LocalDevelopment": "When running locally (not in containers), change hosts to 'localhost'"
   }
 }
