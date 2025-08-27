@@ -11,6 +11,25 @@ functions that respond to any message published to IBM MQ.
 | MQQueueInput   | in        | Get a message from queue                         |
 | MQQueueOutput  | out       | Put a message to queue                           |
 
+## Supported types
+
+[MQExtensionConfigProvider](src\WebJobs.Extensions.IBMMQ\Config\MQExtensionConfigProvider.cs) facilitates various types to use with the bindings, you can use the following:
+
+(1) Native message with MQ properties, without conversion (requires a NuGet reference to [IBMXMSDotnetClient](https://www.nuget.org/packages/IBMXMSDotnetClient)):
+
+- `IBM.XMS.IMessage`
+
+(2) Converted message with some popular MQ properties (see [MessageConverters - CreateMessage method](src\WebJobs.Extensions.IBMMQ\Config\MessageConverters.cs)):
+
+- `Azure.WebJobs.Extensions.IBMMQ.MQMessage`
+- `Azure.WebJobs.Extensions.IBMMQ.MQTextMessage`
+- `Azure.WebJobs.Extensions.IBMMQ.MQBytesMessage`
+
+(3) Converted message, only the body, without MQ properties:
+
+- `byte[]`
+- `string`
+
 ## Example connection strings
 
 As value for `MQ_CONNECTION_STRING`.
