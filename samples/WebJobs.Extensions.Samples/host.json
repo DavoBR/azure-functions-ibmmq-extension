@@ -1,11 +1,24 @@
 {
     "version": "2.0",
     "logging": {
+        "logLevel": {
+            "default": "Information",
+            "Function": "Information",
+            "Host.Results": "Information",
+            "Host.Aggregator": "Information"
+        },
+        "console": {
+            "isEnabled": true
+        },
         "applicationInsights": {
             "samplingSettings": {
-                "isEnabled": true,
-                "excludedTypes": "Request"
+                "isEnabled": false
             }
+        }
+    },
+    "extensions": {
+        "timer": {
+            "useMonitor": false
         }
     }
 }

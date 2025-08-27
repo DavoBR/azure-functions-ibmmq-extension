@@ -12,6 +12,8 @@ services:
     stdin_open: true
     container_name: devcontainer
     # first start the devcontainer, and generate certs for the MQ service
+    depends_on:
+      - azurite
     networks:
       - network_func_mq
 
@@ -40,7 +42,7 @@ services:
       - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
       - ./setup-mq-tls.sh:/etc/mqm/setup-mq-tls.sh:ro
     # uncomment 'command' to setup TLS on queue manager QMGR
-    command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QMGR && strmqm QMGR && tail -f /dev/null"
+    #command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QMGR && strmqm QMGR && tail -f /dev/null"
     # let the devcontainer generate the certs first...
     # note the timing issue...
     depends_on:
@@ -55,7 +57,7 @@ services:
       - "10000:10000" # Blob
       - "10001:10001" # Queue
       - "10002:10002" # Table
-    command: "azurite-blob --blobHost 0.0.0.0 --location /data"
+    command: "azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --location /data"
     volumes:
       # use a local folder in the root of your project
       # exclude the contents of the folder in gitignore

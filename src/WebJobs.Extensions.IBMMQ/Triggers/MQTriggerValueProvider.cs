@@ -31,7 +31,7 @@ internal class MQTriggerValueProvider : IValueProvider
             obj = MessageConverters.MessageToBytes(bytesMessage);
         } else if (Type == typeof(string) && _input is ITextMessage textMessage) {
             obj = MessageConverters.MessageToString(textMessage);
-        } else {
+        }  else {
             throw new InvalidOperationException(_convertError.Value);
         }
 
