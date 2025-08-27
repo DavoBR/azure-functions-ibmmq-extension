@@ -6,7 +6,8 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "runServices": [
-    "qmgr"
+    "ibmmq",
+    "azurite"
   ],
   "workspaceFolder": "/workspace",
   "customizations": {
@@ -15,6 +16,7 @@
         "terminal.integrated.shell.linux": "/bin/bash"
       },
       "extensions": [
+        "ms-dotnettools.csdevkit",
         "ms-dotnettools.csharp",
         "ms-azuretools.vscode-azurefunctions",
         "ms-vscode.azurecli"

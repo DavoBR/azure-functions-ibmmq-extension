@@ -11,15 +11,13 @@ services:
     tty: true
     stdin_open: true
     container_name: devcontainer
-    # first start the devcontainer and generate certs for the MQ service
-    depends_on:
-      - qmgr
+    # first start the devcontainer, and generate certs for the MQ service
     networks:
       - network_func_mq
 
-  qmgr:
+  ibmmq:
     image: icr.io/ibm-messaging/mq:latest
-    container_name: QMGR
+    container_name: ibmmqcontainer
     environment:
       - LICENSE=accept
       # MQ_*_PASSWORD variables are deprecated, use secrets instead
@@ -42,7 +40,11 @@ services:
       - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
       - ./setup-mq-tls.sh:/etc/mqm/setup-mq-tls.sh:ro
     # uncomment 'command' to setup TLS on queue manager QMGR
-    # command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QMGR && strmqm QMGR && tail -f /dev/null"
+    command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QMGR && strmqm QMGR && tail -f /dev/null"
+    # let the devcontainer generate the certs first...
+    # note the timing issue...
+    depends_on:
+      - devcontainer
     networks:
       - network_func_mq
   
@@ -50,7 +52,9 @@ services:
     image: mcr.microsoft.com/azure-storage/azurite
     container_name: azurite
     ports:
-      - 10000:10000
+      - "10000:10000" # Blob
+      - "10001:10001" # Queue
+      - "10002:10002" # Table
     command: "azurite-blob --blobHost 0.0.0.0 --location /data"
     volumes:
       # use a local folder in the root of your project

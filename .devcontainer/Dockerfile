@@ -31,4 +31,5 @@ RUN curl -sSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh \
 RUN wget -q https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
-    && apt-get install -y azure-functions-core-tools
+    && apt-get install -y azure-functions-core-tools \
+    && chmod 755 /usr/lib/azure-functions-core-tools/in-proc8/func

@@ -50,10 +50,10 @@ You can then run the ```Worker.Extensions.Samples``` project.
 ```bash
 # IBM MQ web console: <https://:9443/ibmmq/console>  (admin/passw0rd)
 # https://www.ibm.com/docs/en/ibm-mq/9.3.x
-docker run -it --rm -e LICENSE=accept -e MQ_DEV=true -e MQ_QMGR_NAME=QMGR -e TZ=Europe/Amsterdam -p 1414:1414 -p 9443:9443 -p 9157:9157 --name QMGR icr.io/ibm-messaging/mq:latest
+docker run -it --rm -e LICENSE=accept -e MQ_DEV=true -e MQ_QMGR_NAME=QMGR -e TZ=Europe/Amsterdam -p 1414:1414 -p 9443:9443 -p 9157:9157 --name ibmmq icr.io/ibm-messaging/mq:latest
 ```
 
 ## When using devcontainers
 
 When using devcontainer with docker-compose, use the service name from the docker-compose file as your hostname.
-E.g. do not use 'localhost', but e.g. 'qmgr' if that is your service name. 
+E.g. do not use 'localhost', but e.g. 'ibmmq' if that is your service name.
