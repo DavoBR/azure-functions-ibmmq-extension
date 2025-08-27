@@ -36,9 +36,8 @@ internal class MQTriggerBinding : ITriggerBinding
         return Task.FromResult<IListener>(new MQListener(context.Descriptor.Id, context.Executor, _context));
     }
 
-    public ParameterDescriptor ToParameterDescriptor()
-    {
-        return new MQTriggerParamaterDescryptor(_context.QueueName) {
+    public ParameterDescriptor ToParameterDescriptor() {
+        return new MQTriggerParameterDescriptor(_context.QueueName){
             Name = _context.ParameterInfo.Name,
             Type = "MQQueueTrigger"
         };
