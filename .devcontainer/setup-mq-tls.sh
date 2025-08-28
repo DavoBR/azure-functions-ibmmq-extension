@@ -9,7 +9,7 @@ STH_FILE="$CERT_DIR/key.sth"
 PKCS12_FILE="$CERT_DIR/dev.p12"
 LABEL="ibmcert"
 PASSWORD="passw0rd"
-QMGR_NAME="QMGR"
+QMGR_NAME="QM1"
 
 if [ ! -f "$CERT_FILE" ] || [ ! -f "$KEY_FILE" ]; then
   echo "❌ Missing PEM cert or key in $CERT_DIR"
@@ -35,7 +35,7 @@ openssl pkcs12 -export \
 # Import PKCS#12 into KDB
 runmqakm -cert -import -target "$KDB_FILE" -file "$PKCS12_FILE" -pw "$PASSWORD"
 
-# Configure QMGR
+# Configure QM1
 echo "ALTER QMGR SSLKEYR('$CERT_DIR/key')" | runmqsc "$QMGR_NAME"
 echo "DEFINE CHANNEL(DEV.SVRCONN) CHLTYPE(SVRCONN) TRPTYPE(TCP) SSLCIPH(TLS_RSA_WITH_AES_256_CBC_SHA256) SSLCAUTH(OPTIONAL)" | runmqsc "$QMGR_NAME"
 echo "REFRESH SECURITY TYPE(SSL)" | runmqsc "$QMGR_NAME"

@@ -7,7 +7,7 @@ public static class MQGetSample
 {
     [Function(nameof(MQGetSample))]
     public static Task RunAsync(
-        [TimerTrigger("* * * * *")] TimerInfo timerInfo,
+        [TimerTrigger("*/5 * * * * *")] TimerInfo timerInfo,
         [MQQueueInput("%MQ_QUEUE_OUTPUT%", Connection = "MQ_CONNECTION_STRING")] string? input,
         FunctionContext context)
     {
