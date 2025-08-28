@@ -15,10 +15,5 @@
                 "isEnabled": false
             }
         }
-    },
-    "extensions": {
-        "timer": {
-            "useMonitor": false
-        }
     }
 }
