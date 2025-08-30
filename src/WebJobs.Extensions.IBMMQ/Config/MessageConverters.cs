@@ -14,16 +14,34 @@ internal static class MessageConverters
         };
     }
 
+    public static string? MessageToString(MQMessage message)
+    {
+        if (message is MQTextMessage textMessage) {
+            return textMessage.Text;
+        }
+
+        throw new InvalidOperationException("Not Text Message");
+    }
+
+    public static byte[]? MessageToBytes(MQMessage message)
+    {
+        if (message is MQBytesMessage bytesMessage) {
+            return bytesMessage.Bytes;
+        }
+
+        throw new InvalidOperationException("Not Bytes Message");
+    }
+
     public static byte[]? MessageToBytes(IMessage? message)
     {
         switch (message) {
             case null:
                 return null;
             case IBytesMessage bytesMessage: {
-                var bytes = new byte[bytesMessage.BodyLength];
-                bytesMessage.ReadBytes(bytes);
-                return bytes;
-            }
+                    var bytes = new byte[bytesMessage.BodyLength];
+                    bytesMessage.ReadBytes(bytes);
+                    return bytes;
+                }
             default:
                 throw new InvalidOperationException(
                     $"The message is type {message.GetType().Name} expected {nameof(IBytesMessage)}");
@@ -36,15 +54,15 @@ internal static class MessageConverters
             case null:
                 return null;
             case ITextMessage textMessage: {
-                var mqMessage = CreateMessage<MQTextMessage>(textMessage);
-                mqMessage.Text = MessageToString(textMessage);
-                return mqMessage;
-            }
+                    var mqMessage = CreateMessage<MQTextMessage>(textMessage);
+                    mqMessage.Text = MessageToString(textMessage);
+                    return mqMessage;
+                }
             case IBytesMessage bytesMessage: {
-                var mqMessage = CreateMessage<MQBytesMessage>(bytesMessage);
-                mqMessage.Bytes = MessageToBytes(bytesMessage);
-                return mqMessage;
-            }
+                    var mqMessage = CreateMessage<MQBytesMessage>(bytesMessage);
+                    mqMessage.Bytes = MessageToBytes(bytesMessage);
+                    return mqMessage;
+                }
             default:
                 throw new InvalidOperationException($"Unknown message type {message.GetType().Name}");
         }
@@ -65,27 +83,9 @@ internal static class MessageConverters
         return new MQBytesMessage(bytes);
     }
 
-    public static byte[]? MessageToBytes(MQMessage message)
-    {
-        if (message is MQBytesMessage bytesMessage) {
-            return bytesMessage.Bytes;
-        }
-
-        throw new InvalidOperationException("Not Bytes Message");
-    }
-
     public static MQMessage StringToMessage(string text)
     {
         return new MQTextMessage(text);
-    }
-    
-    public static string? MessageToString(MQMessage message)
-    {
-        if (message is MQTextMessage textMessage) {
-            return textMessage.Text;
-        }
-
-        throw new InvalidOperationException("Not Text Message");
     }
 
     private static TMessage CreateMessage<TMessage>(IMessage source) where TMessage : MQMessage

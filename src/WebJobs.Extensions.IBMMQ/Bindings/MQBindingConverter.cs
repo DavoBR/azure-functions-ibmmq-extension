@@ -1,5 +1,4 @@
 using Azure.WebJobs.Extensions.IBMMQ.Config;
-using Azure.WebJobs.Extensions.IBMMQ.Clients;
 using IBM.XMS;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -14,31 +13,32 @@ internal class MQBindingConverter : IConverter<MQQueueAttribute, IMessage>
     {
         _configProvider = configProvider;
     }
-    
+
     public IMessage Convert(MQQueueAttribute attribute)
     {
         var context = _configProvider.CreateContext(attribute, "MQQueue-Input");
         var logger = context.Logger;
         var clientFactory = context.ClientFactory;
         var details = $"connection='{context.ConnectionString}', queue='{context.QueueName}'";
-        
+
         ISession? session = null;
         IDestination? destination = null;
         IMessageConsumer? consumer = null;
 
         try {
             var client = clientFactory.CreateClient(context.ConnectionString);
-            
+
             session = client.CreateSession();
             destination = session.CreateQueue(context.QueueName);
             consumer = session.CreateConsumer(destination);
-            
+
             client.Start();
-            
+
             return consumer.ReceiveNoWait();
-        } catch (Exception) {
-            logger.LogError("Error receive message ({Details}", details);
-            throw;
+        } catch (Exception ex) {
+            var exceptionMessage = "Error receiving message";
+            logger.LogError(ex, "{ExceptionMessage} ({Details})", exceptionMessage, details);
+            throw new InvalidOperationException(exceptionMessage, ex);
         } finally {
             consumer?.Dispose();
             destination?.Dispose();

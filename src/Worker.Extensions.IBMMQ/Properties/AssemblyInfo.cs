@@ -2,4 +2,4 @@
 
 using Microsoft.Azure.Functions.Worker.Extensions.Abstractions;
 
-[assembly: ExtensionInformation("AzureWebJobs.Extensions.IBMMQ", "1.0.0")]
+[assembly: ExtensionInformation("AzureWebJobs.Extensions.IBMMQ", "1.1.0")]

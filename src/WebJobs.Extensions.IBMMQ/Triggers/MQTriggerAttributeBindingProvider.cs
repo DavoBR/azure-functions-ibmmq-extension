@@ -1,20 +1,14 @@
 using System.Reflection;
 using Azure.WebJobs.Extensions.IBMMQ.Config;
-using Azure.WebJobs.Extensions.IBMMQ.Clients;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Host.Triggers;
-using Microsoft.Azure.WebJobs.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Azure.WebJobs.Extensions.IBMMQ.Triggers;
 
 internal class MQTriggerAttributeBindingProvider : ITriggerBindingProvider
 {
     private readonly MQExtensionConfigProvider _configProvider;
-    
+
     public MQTriggerAttributeBindingProvider(MQExtensionConfigProvider configProvider)
     {
         _configProvider = configProvider;

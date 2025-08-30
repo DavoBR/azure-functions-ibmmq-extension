@@ -262,3 +262,5 @@ __pycache__/
 
 .DS_Store
 .azurite
+__azurite*
+__blobstorage*

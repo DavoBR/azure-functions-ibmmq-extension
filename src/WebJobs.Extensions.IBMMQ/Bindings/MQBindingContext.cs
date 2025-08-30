@@ -10,7 +10,7 @@ internal class MQBindingContext
     public string? MessageId { get; set; }
 
     public string? CorrelationId { get; set; }
-    
+
     public string ConnectionString { get; set; } = null!;
 
     public MQClientFactory ClientFactory { get; set; } = null!;

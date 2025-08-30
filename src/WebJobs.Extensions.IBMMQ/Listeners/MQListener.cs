@@ -18,12 +18,12 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
     private readonly Lazy<MQScaleMonitor> _scaleMonitor;
     private readonly Lazy<MQClient> _client;
     private readonly string _details;
-    
+
     private bool _started;
     private ISession? _session;
     private IDestination? _destination;
     private IMessageConsumer? _consumer;
-    
+
     public MQListener(string functionId, ITriggeredFunctionExecutor executor, MQTriggerContext triggerContext)
     {
         _functionId = functionId;
@@ -43,7 +43,7 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
     private MQClient CreateClient()
     {
         var client = _context.ClientFactory.CreateClient(_context.ConnectionString);
-        
+
         client.ExceptionListener += ex => ProcessErrorAsync(ex).Wait();
 
         _session = client.CreateSession();
@@ -54,12 +54,12 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
         return client;
     }
 
-    public IScaleMonitor GetMonitor()  
+    public IScaleMonitor GetMonitor()
     {
         return _scaleMonitor.Value;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken) 
+    public Task StartAsync(CancellationToken cancellationToken)
     {
         try {
             _client.Value.Start();
@@ -67,12 +67,13 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
             _started = true;
 
             _logger.LogInformation("MQ listener started ({Details})", _details);
-            
-        } catch (Exception) {
-            _logger.LogError("Can't start MQ listener ({Details})", _details);
-            throw;
+
+        } catch (Exception ex) {
+            var exceptionMessage = "Can't start MQ listener";
+            _logger.LogError(ex, "{ExceptionMessage} ({Details})", exceptionMessage, _details);
+            throw new InvalidOperationException(exceptionMessage, ex);
         }
-        
+
         return Task.CompletedTask;
     }
 
@@ -81,9 +82,9 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
         if (!_started) {
             return Task.CompletedTask;
         }
-        
+
         _client.Value.Stop();
-        
+
         _logger.LogInformation("MQ listener stopped ({Details})", _details);
 
         _started = false;
@@ -91,13 +92,15 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
         return Task.CompletedTask;
     }
 
-    public void Cancel() {
+    public void Cancel()
+    {
         StopAsync(CancellationToken.None).Wait();
     }
-    
-    public void Dispose() {
+
+    public void Dispose()
+    {
         StopAsync(CancellationToken.None).Wait();
-        
+
         _consumer?.Dispose();
         _destination?.Dispose();
         _session?.Dispose();
@@ -115,10 +118,10 @@ internal sealed class MQListener : IListener, IScaleMonitorProvider
 
         await _executor.TryExecuteAsync(input, CancellationToken.None);
     }
-    
+
     private Task ProcessErrorAsync(Exception ex)
     {
-        if (ex is MQException {ReasonCode: 2545}) {
+        if (ex is MQException { ReasonCode: 2545 }) {
             _logger.LogWarning(ex, "The MQ connection reconnected successfully and all handles are reinstated");
         } else {
             _logger.LogError(ex, "MQConnection error");
