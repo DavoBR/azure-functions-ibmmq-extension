@@ -7,7 +7,7 @@ public static class MQOutputSample
 {
     [Function(nameof(MQOutputSample))]
     [MQQueueOutput("%MQ_QUEUE_INPUT%", Connection = "MQ_CONNECTION_STRING")]
-    public static string RunAsync([TimerTrigger("*/15 * * * * *")] TimerInfo timerInfo, FunctionContext context)
+    public static string RunAsync([TimerTrigger("* * * * *")] TimerInfo timerInfo, FunctionContext context)
     {
         var log = context.GetLogger(nameof(MQOutputSample));
 

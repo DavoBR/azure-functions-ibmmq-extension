@@ -7,7 +7,7 @@ public static class MQOutputSample
 {
     [FunctionName(nameof(MQOutputSample))]
     public static Task RunAsync(
-        [TimerTrigger("*/15 * * * * *")] TimerInfo timerInfo,
+        [TimerTrigger("* * * * *")] TimerInfo timerInfo,
         [MQQueue("%MQ_QUEUE_INPUT%", Connection = "MQ_CONNECTION_STRING")] out string output,
         ILogger log)
     {
