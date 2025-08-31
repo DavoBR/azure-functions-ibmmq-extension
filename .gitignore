@@ -264,3 +264,6 @@ __pycache__/
 .azurite
 __azurite*
 __blobstorage*
+
+azurite_data/
+.devcontainer/certs/
