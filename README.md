@@ -3,6 +3,13 @@
 This extension provides functionality for receiving IBM MQ messages in Azure Functions, allowing you to easily write
 functions that respond to any message published to IBM MQ.
 
+## Packages
+
+This project is the source code for the following NuGet packages:
+
+- [AzureFunctions.Worker.Extensions.IBMMQ](https://www.nuget.org/packages/AzureFunctions.Worker.Extensions.IBMMQ) - IBMMQ extensions for .NET isolated functions
+- [AzureWebJobs.Extensions.IBMMQ](https://www.nuget.org/packages/AzureWebJobs.Extensions.IBMMQ) - Azure WebJobs SDK IBMMQ Extension
+
 ## Available bindings
 
 | Name           | Direction | Description                                      |
