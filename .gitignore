@@ -264,3 +264,9 @@ __pycache__/
 .azurite
 __azurite*
 __blobstorage*
+
+azurite_data/
+!azurite_data/.gitkeep
+
+certs/
+!certs/.gitkeep

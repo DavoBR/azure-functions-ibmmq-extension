@@ -1,0 +1,77 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "functiondevcontainer:1.0"
+    volumes:
+      - ..:/workspace:cached
+    ports:
+      - "7071:7071"
+    tty: true
+    stdin_open: true
+    container_name: devcontainer
+    # first start the devcontainer, and generate certs for the MQ service
+    depends_on:
+      - azurite
+    networks:
+      - network_func_mq
+
+  ibmmq:
+    # list available images tags with: 'curl -X GET https://icr.io/v2/ibm-messaging/mq/tags/list'
+    #image: icr.io/ibm-messaging/mq:9.4.3.0-r2
+    build:
+      context: .
+      dockerfile: Dockerfile.ibmmq
+      args:
+        MQ_IMAGE_TAG: "9.4.3.0-r2"
+    image: "ibmmq:9.4.3.0-r2"
+    container_name: ibmmqcontainer
+    environment:
+      - LICENSE=accept
+      # MQ_*_PASSWORD variables are deprecated, use secrets instead
+      # see:  https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_DEV=true
+      - MQ_QMGR_NAME=QM1
+      - MQ_ENABLE_METRICS=false  # Disable Prometheus metrics
+      - TZ=Europe/Amsterdam
+    ports:
+      - 1414:1414
+      - 9443:9443
+      - 9157:9157
+    # depends_on:
+    #   # wait for the devcontainer to be ready generating the certs...
+    #   - devcontainer
+    volumes:
+      - ./certs/dev.cert.pem:/etc/mqm/pki/keys/devcert.pem:ro
+      - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
+      - ./setup-mq-tls.sh:/etc/mqm/setup-mq-tls.sh:ro
+    # uncomment 'command' to setup TLS on queue manager QM1
+    #command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QM1 && strmqm QM1 && tail -f /dev/null"
+    # let the devcontainer generate the certs first...
+    # note the timing issue...
+    depends_on:
+      - devcontainer
+    networks:
+      - network_func_mq
+  
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - "10000:10000" # Blob
+      - "10001:10001" # Queue
+      - "10002:10002" # Table
+    command: "azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --location /data"
+    volumes:
+      # use a local folder in the root of your project
+      # exclude the contents of the folder in gitignore
+      - ../azurite_data:/data
+    networks:
+      - network_func_mq
+
+networks:
+  network_func_mq:
+    driver: bridge

@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlZscvjCHv72HV6VbGYHrXNDHHZ6Shl5vogJ8J7HOKQpCSxoyS2fyBx9BBctwsSd8g==;BlobEndpoint=http://localhost:10000/devstoreaccount1;QueueEndpoint=http://localhost:10001/devstoreaccount1;TableEndpoint=http://localhost:10002/devstoreaccount1;",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "MQ_CONNECTION_STRING": "Host=localhost;Port=1414;Channel=DEV.APP.SVRCONN;UserId=app;Password=passw0rd",
+    "MQ_QUEUE_INPUT": "DEV.QUEUE.1",
+    "MQ_QUEUE_OUTPUT": "DEV.QUEUE.2"
+  },
+  "Comments": {
+    "ConnectionSettings": "When using devcontainer, use service names from docker-compose as hosts (azurite, ibmmq, etc)",
+    "LocalDevelopment": "When running locally (not in containers), change hosts to 'localhost'"
+  }
+}

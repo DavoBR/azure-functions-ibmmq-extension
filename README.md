@@ -70,3 +70,19 @@ Then you can run either:
 
 1. the `Worker.Extensions.Samples` project. Please note that this uses the assembly from NuGet, read more about it [here](https://blog.maartenballiauw.be/post/2021/06/01/custom-bindings-with-azure-functions-dotnet-isolated-worker.html).
 1. the `WebJobs.Extensions.Samples` project. This runs the binding directly from [/src/](./src/).
+
+## DevContainers
+
+When using devcontainers, three containers are started.
+These containers are connected to same network:
+
+- a devcontainer with dotNet and the function runtime,
+- an IBM MQ container,
+- an Azurite container (provides storage for the function)
+
+Run the WebJobs sample in the devcontainer:
+
+- `cd samples/WebJobs.Extensions.Samples`
+- `mv local.settings.json local.settings.json.bak`
+- `cp local.settings.devcontainer.json local.settings.json`
+- `func start -v`
