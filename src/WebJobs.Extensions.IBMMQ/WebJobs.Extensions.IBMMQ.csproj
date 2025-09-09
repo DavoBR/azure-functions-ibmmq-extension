@@ -8,7 +8,7 @@
         <Nullable>enable</Nullable>
         <Description>Azure WebJobs SDK IBMMQ Extension</Description>
         <PackageTags>ibmmq azurefunctions webjobs mqtrigger</PackageTags>
-        <Version>1.2.0</Version>
+        <Version>1.2.1</Version>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="IBMXMSDotnetClient" Version="9.4.3" />
