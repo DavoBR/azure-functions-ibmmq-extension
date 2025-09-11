@@ -73,12 +73,13 @@ Then you can run either:
 
 ## DevContainers
 
-When using devcontainers, three containers are started.
-These containers are connected to same network:
+When using 'devcontainers', four containers are started (see ./devcontainer/docker-compose.yml for nitty gritty).
+The containers are connected to same network:
 
-- a devcontainer with dotNet and the function runtime,
-- an IBM MQ container,
-- an Azurite container (provides storage for the function)
+- devcontainer: provides your prompt and tools (e.g. dotNet and Azure function core),
+- IBM MQ container: provides an IBM MQ dev instance
+- Azurite container: provides storage for Azure function core
+- generate-cert container: an init container only for creating fresh dev certificates
 
 Run the WebJobs sample in the devcontainer:
 
@@ -86,3 +87,8 @@ Run the WebJobs sample in the devcontainer:
 - `mv local.settings.json local.settings.json.bak`
 - `cp local.settings.devcontainer.json local.settings.json`
 - `func start -v`
+
+## FAQ
+
+Q: How do i remove left-over devcontainers?  
+A: Go to folder ´.devcontainer/´ and run ´./cleanup-devcontainers.sh´
