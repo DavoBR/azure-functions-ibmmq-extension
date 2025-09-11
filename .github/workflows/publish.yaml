@@ -22,10 +22,14 @@ jobs:
         run: dotnet restore
         
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: |
+          dotnet build src/WebJobs.Extensions.IBMMQ/WebJobs.Extensions.IBMMQ.csproj --configuration Release --no-restore
+          dotnet build src/Worker.Extensions.IBMMQ/Worker.Extensions.IBMMQ.csproj --configuration Release --no-restore
         
       - name: Pack
-        run: dotnet pack --configuration Release --no-build --output .
+        run: |
+          dotnet pack src/WebJobs.Extensions.IBMMQ/WebJobs.Extensions.IBMMQ.csproj --configuration Release --no-build -o .
+          dotnet pack src/Worker.Extensions.IBMMQ/Worker.Extensions.IBMMQ.csproj --configuration Release --no-build -o .
         
       - name: Publish
         run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{secrets.NUGET_API_KEY}}
