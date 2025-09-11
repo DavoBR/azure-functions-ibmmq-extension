@@ -1,0 +1,5 @@
+ARG MQ_IMAGE_TAG
+FROM icr.io/ibm-messaging/mq:${MQ_IMAGE_TAG}
+
+# Ensure dev cert path
+RUN mkdir -p /etc/mqm/pki/keys

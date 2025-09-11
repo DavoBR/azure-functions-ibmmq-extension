@@ -70,3 +70,25 @@ Then you can run either:
 
 1. the `Worker.Extensions.Samples` project. Please note that this uses the assembly from NuGet, read more about it [here](https://blog.maartenballiauw.be/post/2021/06/01/custom-bindings-with-azure-functions-dotnet-isolated-worker.html).
 1. the `WebJobs.Extensions.Samples` project. This runs the binding directly from [/src/](./src/).
+
+## DevContainers
+
+When using 'devcontainers', four containers are started (see ./devcontainer/docker-compose.yml for nitty gritty).
+The containers are connected to same network:
+
+- devcontainer: provides your prompt and tools (e.g. dotNet and Azure function core),
+- IBM MQ container: provides an IBM MQ dev instance
+- Azurite container: provides storage for Azure function core
+- generate-cert container: an init container only for creating fresh dev certificates
+
+Run the WebJobs sample in the devcontainer:
+
+- `cd samples/WebJobs.Extensions.Samples`
+- `mv local.settings.json local.settings.json.bak`
+- `cp local.settings.devcontainer.json local.settings.json`
+- `func start -v`
+
+## FAQ
+
+Q: How do i remove left-over devcontainers?  
+A: Go to folder ´.devcontainer/´ and run ´./cleanup-devcontainers.sh´

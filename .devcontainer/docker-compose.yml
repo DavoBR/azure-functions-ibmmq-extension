@@ -1,0 +1,101 @@
+services:
+  # The actual development container. This where your dev prompt is.
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "functiondevcontainer:1.0"
+    volumes:
+      - ..:/workspace:cached
+    ports:
+      - "7071:7071"
+    tty: true
+    stdin_open: true
+    container_name: devcontainer
+    # first start the devcontainer, and generate certs for the MQ service
+    depends_on:
+      generate-cert:
+        condition: service_completed_successfully # wait for cert generation
+      azurite:
+        condition: service_healthy
+    networks:
+      - network_func_mq
+
+  # Initialization container to generate self-signed certs for local development
+  generate-cert:
+    build:
+      context: .
+      dockerfile: Dockerfile.generate-cert
+    image: "generate-cert:1.0"
+    container_name: generate-cert
+    volumes:
+      - ./certs:/certs
+
+  # IBM MQ container provides a local instance of IBM MQ for development and testing
+  ibmmq:
+    # list available image tags with: 'curl -X GET https://icr.io/v2/ibm-messaging/mq/tags/list'
+    build:
+      context: .
+      dockerfile: Dockerfile.ibmmq
+      args:
+        MQ_IMAGE_TAG: "9.4.3.0-r2"
+    image: "ibmmq:9.4.3.0-r2"
+    container_name: ibmmqcontainer
+    environment:
+      - LICENSE=accept
+      # MQ_*_PASSWORD variables are deprecated, use secrets instead
+      # see:  https://github.com/ibm-messaging/mq-container/blob/master/docs/developer-config.md
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_DEV=true
+      - MQ_QMGR_NAME=QM1
+      - MQ_ENABLE_METRICS=false  # Disable Prometheus metrics
+      - TZ=Europe/Amsterdam
+    ports:
+      - 1414:1414
+      - 9443:9443
+      - 9157:9157
+    # depends_on:
+    #   # wait for the devcontainer to be ready generating the certs...
+    #   - devcontainer
+    volumes:
+      - ./certs/dev.cert.pem:/etc/mqm/pki/keys/devcert.pem:ro
+      - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
+      - ./setup-mq-tls.sh:/etc/mqm/setup-mq-tls.sh:ro
+    # uncomment 'command' to setup TLS on queue manager QM1
+    #command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QM1 && strmqm QM1 && tail -f /dev/null"
+    # let the devcontainer generate the certs first...
+    # note the timing issue...
+    depends_on:
+      generate-cert:
+        condition: service_completed_successfully # wait for cert generation
+    networks:
+      - network_func_mq
+  
+  # Azurite container to emulate Azure Storage (Blob, Queue, Table). Needed for Azure Functions Core.
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - "10000:10000" # Blob
+      - "10001:10001" # Queue
+      - "10002:10002" # Table
+    command: "azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --location /data"
+    volumes:
+      # use a local folder in the root of your project to store Azurite data
+      # exclude the contents of the folder in .gitignore
+      - ../azurite_data:/data
+    networks:
+      - network_func_mq
+    # Healthcheck runs inside the container
+    # see results with: 'docker inspect --format='{{json .State.Health}}' azurite | jq'
+    healthcheck:
+      test: ["CMD", "nc", "-z", "0.0.0.0", "10000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Define a custom network so the various containers can communicate
+networks:
+  network_func_mq:
+    driver: bridge

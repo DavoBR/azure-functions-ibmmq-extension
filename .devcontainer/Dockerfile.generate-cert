@@ -1,0 +1,4 @@
+FROM alpine:latest
+RUN apk add --no-cache bash openssl ca-certificates git
+COPY generate-cert.sh /generate-cert.sh
+ENTRYPOINT ["bash", "/generate-cert.sh"]

@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "MQ_CONNECTION_STRING": "Host=192.168.50.209;Port=1414;Channel=DEV.APP.SVRCONN;SSLCertLabel=mykey;SSLKeyRepo=*USER",
+    "MQ_QUEUE_INPUT": "DEV.QUEUE.1",
+    "MQ_QUEUE_OUTPUT": "DEV.QUEUE.2"
+  }
+}
