@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "github.copilot-chat",
     "ms-azuretools.vscode-azurefunctions",
     "ms-dotnettools.csharp"
   ]

@@ -1,4 +1,18 @@
 FROM alpine:latest
-RUN apk add --no-cache bash openssl ca-certificates git
+
+# Add the Zscaler public certificates (CA and intermediate) to the image
+# If Zscaler is not used, then no harm is done.
+COPY  certs_zscaler/Zscaler_Intermediate_Root_CA_zscaler.net.crt \
+      certs_zscaler/Zscaler_Root_CA.crt \
+      /usr/local/share/ca-certificates/
+
+# Append each cert to the system bundle with a blank line in between
+RUN for cert in /usr/local/share/ca-certificates/*.crt; do \
+      echo "" >> /etc/ssl/certs/ca-certificates.crt && \
+      cat "$cert" >> /etc/ssl/certs/ca-certificates.crt; \
+    done
+
+RUN apk add --no-cache bash openssl ca-certificates
+
 COPY generate-cert.sh /generate-cert.sh
 ENTRYPOINT ["bash", "/generate-cert.sh"]
