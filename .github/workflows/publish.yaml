@@ -11,6 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Check version equality
+        run: bash scripts/check-version-equality.sh
+
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
@@ -20,7 +23,6 @@ jobs:
 
       - name: Install dependencies
         run: dotnet restore
-        
       - name: Build
         run: |
           dotnet build src/WebJobs.Extensions.IBMMQ/WebJobs.Extensions.IBMMQ.csproj --configuration Release --no-restore
