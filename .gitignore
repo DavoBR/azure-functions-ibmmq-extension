@@ -4,7 +4,7 @@ azurite_data/*
 
 # Ignore self-signed certs for local development
 .devcontainer/certs/*
-!./devcontainer/certs/.gitkeep
+!.devcontainer/certs/.gitkeep
 
 # User-specific files
 *.suo

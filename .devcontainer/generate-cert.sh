@@ -12,7 +12,6 @@ CERT_CRT="${CERT_DIR}/dev.cert.pem"
 mkdir -p "$CERT_DIR"
 
 # Generate self-signed cert if it doesn't exist or is an empty file
-# The Git repo contains a placeholder empty files to prevent timing issues
 if [ ! -f "$CERT_KEY" ] || [ ! -s "$CERT_KEY" ] || [ ! -f "$CERT_CRT" ] || [ ! -s "$CERT_CRT" ]; then
     echo "Generating self-signed dev certificate..."
     openssl req -x509 -nodes -days 365 \
@@ -24,7 +23,7 @@ if [ ! -f "$CERT_KEY" ] || [ ! -s "$CERT_KEY" ] || [ ! -f "$CERT_CRT" ] || [ ! -
 fi
 
 # Install certificate to trusted store
-# echo "Installing certificate to trusted store..."
-# cp "$CERT_CRT" "/usr/local/share/ca-certificates/${CERT_NAME}.crt"
-# update-ca-certificates
-# echo "Certificate trusted."
+echo "Installing certificate to trusted store..."
+cp "$CERT_CRT" "/usr/local/share/ca-certificates/${CERT_NAME}.crt"
+update-ca-certificates
+echo "Certificate trusted."
