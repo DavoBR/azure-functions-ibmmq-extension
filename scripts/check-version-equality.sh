@@ -1,5 +1,4 @@
 #!/bin/bash
-# filepath: /workspace/check-version-equality.sh
 
 set -e
 
