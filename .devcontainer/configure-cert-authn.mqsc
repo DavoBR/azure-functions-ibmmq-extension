@@ -1,0 +1,18 @@
+--
+-- Configure MQ certificate authentication on a channel.
+-- MQSC reference: https://www.ibm.com/docs/en/ibm-mq/9.4.x?topic=reference-mqsc-commands
+-- Run script at startup: https://www.ibm.com/docs/en/ibm-mq/9.4.x?topic=commands-automatic-configuration-from-mqsc-script-startup
+-- See .devcontainer/docker-compose.yml for hints on running this file
+
+
+-- Enable SSL/TLS on the SVRCONN channel
+ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) SSLCIPH('ANY_TLS12')
+
+-- Optional: Require clients to present a valid certificate for authentication
+ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) SSLCAUTH(REQUIRED)
+
+-- Optional but recommended: Disable CHLAUTH temporarily to allow SSL-based access
+ALTER QMGR CHLAUTH(DISABLED)
+
+-- Apply and refresh SSL security settings
+REFRESH SECURITY TYPE(SSL)

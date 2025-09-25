@@ -57,7 +57,7 @@ If you don't have an MQ server available you can quickly have one using docker a
 docker run -e LICENSE=accept -e MQ_QMGR_NAME=QMGR -p 1414:1414 -p 9443:9443 -detach --name QMGR icr.io/ibm-messaging/mq:latest
 ```
 
-To configure certificate authentication on the MQ-side, consider the following `.mqsc` script, which you can place into the container at `/etc/mqm/` and it will automatically execute:
+To configure certificate authentication on the MQ-side, consider the following MQSC script (see `.devcontainer/configure-cert-authn.mqsc`), which you can place into the container at `/etc/mqm/` and it will automatically execute:
 
 ```
 -- Enable SSL/TLS on the SVRCONN channel
@@ -80,7 +80,7 @@ Then you can run either:
 
 ## DevContainers
 
-When using 'devcontainers', four containers are started (see ./devcontainer/docker-compose.yml for nitty gritty).
+When using 'devcontainers', four containers are started (see `.devcontainer/docker-compose.yml` for nitty gritty).
 The containers are connected to same network:
 
 - devcontainer: provides your prompt and tools (e.g. dotNet and Azure function core),
