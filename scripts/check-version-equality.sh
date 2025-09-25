@@ -5,16 +5,17 @@ set -e
 REPO_ROOT=$(git rev-parse --show-cdup)
 cd "$REPO_ROOT"
 
-proj1="src/WebJobs.Extensions.IBMMQ/WebJobs.Extensions.IBMMQ.csproj"
-proj2="src/Worker.Extensions.IBMMQ/Worker.Extensions.IBMMQ.csproj"
+webjob_ibmmq="src/WebJobs.Extensions.IBMMQ/WebJobs.Extensions.IBMMQ.csproj"
+worker_ibmmq="src/Worker.Extensions.IBMMQ/Properties/AssemblyInfo.cs"
 
-version1=$(grep -oPm1 '(?<=<Version>)[^<]+' "$proj1")
-version2=$(grep -oPm1 '(?<=<Version>)[^<]+' "$proj2")
+webjob_ibmmq_version=$(grep -oPm1 '(?<=<Version>)[^<]+' "$webjob_ibmmq")
+worker_ibmmq_version=$(grep -oPm1 '(?<=ExtensionInformation\("AzureWebJobs.Extensions.IBMMQ", ")[^"]+' "$worker_ibmmq")
 
-if [[ "$version1" == "$version2" ]]; then
-  echo "Versions match: $version1"
+
+if [[ "$webjob_ibmmq_version" == "$worker_ibmmq_version" ]]; then
+  echo "Versions match: $webjob_ibmmq_version"
   exit 0
 else
-  echo "Versions differ: $version1 != $version2"
+  echo "Versions differ: $webjob_ibmmq_version != $worker_ibmmq_version"
   exit 1
 fi
