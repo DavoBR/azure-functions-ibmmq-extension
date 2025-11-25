@@ -55,17 +55,12 @@ services:
       - 1414:1414
       - 9443:9443
       - 9157:9157
-    # depends_on:
-    #   # wait for the devcontainer to be ready generating the certs...
-    #   - devcontainer
     volumes:
       - ./certs/dev.cert.pem:/etc/mqm/pki/keys/devcert.pem:ro
       - ./certs/dev.key.pem:/etc/mqm/pki/keys/devkey.pem:ro
       - ./setup-mq-tls.sh:/etc/mqm/setup-mq-tls.sh:ro
-    # uncomment 'command' to setup TLS on queue manager QM1
     #command: bash -c "/etc/mqm/setup-mq-tls.sh && dspmq && crtmqm QM1 && strmqm QM1 && tail -f /dev/null"
-    # let the devcontainer generate the certs first...
-    # note the timing issue...
+    # ensure the generate-cert container is done generating the certs...
     depends_on:
       generate-cert:
         condition: service_completed_successfully # wait for cert generation
